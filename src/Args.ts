@@ -5,7 +5,7 @@ import {
     IntegerArgumentMarshaler,
     StringArgumentMarshaler,
     StringArrayArgumentMarshaler
-} from "./Marhalers";
+} from "./Marshaler";
 import { Character, HashMap, List, ListIterator } from "./utils";
 
 export class Args {
