@@ -9,7 +9,7 @@ export interface HashMap<T> {
 }
 
 export class List<T> {
-    constructor(private array: T[]) {}
+    constructor(private array: T[]) { }
 
     listIterator(): ListIterator<T> {
         return new ListIterator<T>(this.array);
@@ -19,7 +19,7 @@ export class List<T> {
 export class ListIterator<T> {
     private index: number = -1;
 
-    constructor(private array: T[]) {}
+    constructor(private array: T[]) { }
 
     hasNext(): boolean {
         return this.index < this.array.length - 1;

@@ -49,7 +49,7 @@ export class IntegerArgumentMarshaler implements ArgumentMarshaler {
 
         try {
             parameter = currentArgument.next();
-        } catch(e) {
+        } catch (e) {
             throw new ArgsException(ErrorCode.MISSING_INTEGER, "", null);
         }
         if (!Number.isInteger(parseInt(parameter, 10))) {
@@ -63,6 +63,25 @@ export class IntegerArgumentMarshaler implements ArgumentMarshaler {
             return am.intValue;
         } else {
             return 0;
+        }
+    }
+}
+
+export class StringArrayArgumentMarshaler implements ArgumentMarshaler {
+    private stringArrayValue: string[] = [];
+    set(currentArgument: ListIterator<string>) {
+        try {
+            this.stringArrayValue.push(currentArgument.next());
+        } catch (e) {
+            throw new ArgsException(ErrorCode.MISSING_STRING, "", null);
+        }
+    }
+
+    static getValue(am: ArgumentMarshaler | undefined): string[] {
+        if (am && am instanceof StringArrayArgumentMarshaler) {
+            return am.stringArrayValue;
+        } else {
+            return [];
         }
     }
 }

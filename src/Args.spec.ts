@@ -122,6 +122,31 @@ describe("Args", () => {
         }
     });
 
+    it("testStringArray", () => {
+        const args = new Args("x[*]", ["-x", "alpha"]);
+        expect(args.has("x")).to.be.true;
+        expect(args.cardinality()).to.equal(1);
+        expect(args.getStringArray("x")).to.eql(["alpha"]);
+    });
+
+    it("testManyStringArrayElements", () => {
+        const args = new Args("x[*]", ["-x", "alpha", "-x", "beta", "-x", "gamma"]);
+        expect(args.cardinality()).to.equal(1);
+        expect(args.has("x")).to.be.true;
+        expect(args.getStringArray("x")).to.eql(["alpha", "beta", "gamma"]);
+    });
+
+    it("testMissingStringArrayElement", () => {
+        try {
+            new Args("x[*]", ["-x"]);
+            fail();
+        } catch (e) {
+            if (!(e instanceof ArgsException)) throw e;
+            expect(e.getErrorCode()).to.equal(ErrorCode.MISSING_STRING);
+            expect(e.getErrorArgumentId()).to.equal("x");
+        }
+    });
+
     // it("testSimpleDoublePresent", () => {
     //     const args = new Args("x##", ["-x", "42.3"]);
     //     expect(args.cardinality()).to.equal(1);

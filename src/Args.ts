@@ -3,7 +3,8 @@ import {
     ArgumentMarshaler,
     BooleanArgumentMarshaler,
     IntegerArgumentMarshaler,
-    StringArgumentMarshaler
+    StringArgumentMarshaler,
+    StringArrayArgumentMarshaler
 } from "./Marhalers";
 import { Character, HashMap, List, ListIterator } from "./utils";
 
@@ -38,6 +39,8 @@ export class Args {
             this.marshalers[elementId] = new StringArgumentMarshaler();
         } else if (elementTail === "#") {
             this.marshalers[elementId] = new IntegerArgumentMarshaler();
+        } else if (elementTail === "[*]") {
+            this.marshalers[elementId] = new StringArrayArgumentMarshaler();
         } else {
             throw new ArgsException(ErrorCode.INVALID_ARGUMENT_FORMAT, elementId, elementTail);
         }
@@ -50,7 +53,7 @@ export class Args {
     }
 
     private parseArgumentStrings(argsList: List<string>) {
-        for (this.currentArgument = argsList.listIterator(); this.currentArgument.hasNext(); ) {
+        for (this.currentArgument = argsList.listIterator(); this.currentArgument.hasNext();) {
             const argString = this.currentArgument.next();
             if (argString.startsWith("-")) {
                 this.parseArgumentCharacters(argString.substring(1));
@@ -100,6 +103,10 @@ export class Args {
 
     getInt(arg: string): number {
         return IntegerArgumentMarshaler.getValue(this.marshalers[arg]);
+    }
+
+    getStringArray(arg: string): string[] {
+        return StringArrayArgumentMarshaler.getValue(this.marshalers[arg]);
     }
 
     cardinality(): number {
